@@ -9,8 +9,6 @@ def create_starting_population(individuals, chromosome_length_x,chromosome_lengt
 
     return population
 
-#print (create_starting_population(4, 10))
-
 
 def calculate_fitness(reference, population):
     # Create an array of True/False compared to reference
