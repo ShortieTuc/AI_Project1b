@@ -1,5 +1,6 @@
 import random
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 def create_reference_solution(chromosome_length):
@@ -13,6 +14,9 @@ def create_reference_solution(chromosome_length):
     np.random.shuffle(reference)
 
     return reference
+
+# Print an example target array
+print (create_reference_solution(70))
 
 
 def create_starting_population(individuals, chromosome_length):
@@ -29,6 +33,8 @@ def create_starting_population(individuals, chromosome_length):
 
     return population
 
+print (create_starting_population(4, 10))
+
 
 def calculate_fitness(reference, population):
     # Create an array of True/False compared to reference
@@ -37,6 +43,13 @@ def calculate_fitness(reference, population):
     fitness_scores = identical_to_reference.sum(axis=1)
 
     return fitness_scores
+
+reference = create_reference_solution(10)
+print ('Reference solution: \n', reference)
+population = create_starting_population(6, 10)
+print ('\nStarting population: \n', population)
+scores = calculate_fitness(reference, population)
+print('\nScores: \n', scores)
 
 
 def select_individual_by_tournament(population, scores):
@@ -61,6 +74,17 @@ def select_individual_by_tournament(population, scores):
     # Return the chromsome of the winner
     return population[winner, :]
 
+# Set up and score population
+reference = create_reference_solution(10)
+population = create_starting_population(6, 10)
+scores = calculate_fitness(reference, population)
+
+# Pick two parents and dispplay
+parent_1 = select_individual_by_tournament(population, scores)
+parent_2 = select_individual_by_tournament(population, scores)
+print (parent_1)
+print (parent_2)
+
 
 def breed_by_crossover(parent_1, parent_2):
     # Get length of chromosome
@@ -78,6 +102,26 @@ def breed_by_crossover(parent_1, parent_2):
 
     # Return children
     return child_1, child_2
+
+# Set up and score population
+reference = create_reference_solution(15)
+population = create_starting_population(100, 15)
+scores = calculate_fitness(reference, population)
+
+# Pick two parents and dispplay
+parent_1 = select_individual_by_tournament(population, scores)
+parent_2 = select_individual_by_tournament(population, scores)
+
+# Get children
+child_1, child_2 = breed_by_crossover(parent_1, parent_2)
+
+# Show output
+print ('Parents')
+print (parent_1)
+print (parent_2)
+print ('Children')
+print (child_1)
+print (child_2)
 
 
 def randomly_mutate_population(population, mutation_probability):
@@ -140,8 +184,7 @@ for generation in range(maximum_generation):
 print('End best score, percent target: %.1f' % best_score)
 
 # Plot progress
-import matplotlib.pyplot as plt
-# matplotlib inline
+plt.figure()
 plt.plot(best_score_progress)
 plt.xlabel('Generation')
 plt.ylabel('Best score (% target)')
