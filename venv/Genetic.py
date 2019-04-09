@@ -1,7 +1,6 @@
 import random
 import numpy as np
 import matplotlib.pyplot as plt
-from typing import Any
 
 
 def create_starting_population(individuals, length_x, length_y):
@@ -15,7 +14,7 @@ def feasibility_check(pop, pop_size, length_x, length_y):
 
     fitness_table = np.zeros(pop_size)  # feasible table will be marked as '1', others '0'
 
-    # Table 6 in page 14 from assignment
+    # Table 6 (Hard Constraint) in page 14 from assignment
     hc = np.zeros((3, 14))
     for i in range(3):
         for j in range(14):
@@ -51,17 +50,17 @@ def feasibility_check(pop, pop_size, length_x, length_y):
 
 
 # Set general parameters
-chromosome_length_x = 14  # parallelism with days
-chromosome_length_y = 30  # parallelism with employees
-population_size = 10000
+chromosome_length_x = 14   # parallelism with days
+chromosome_length_y = 30   # parallelism with employees
+population_size = 1000000  # 1 million (!!!)
 maximum_generation = 30
-best_score_progress = []  # Tracks progress
+best_score_progress = []   # Tracks progress
 
 # Create starting population
 population = create_starting_population(population_size, chromosome_length_x, chromosome_length_y)
 # print(population)
 
-# Display best score in starting population
+# Make Hard Constraint Check
 check_table = feasibility_check(population, population_size, chromosome_length_x, chromosome_length_y)
 # print(check_table)
 
