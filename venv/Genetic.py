@@ -38,12 +38,12 @@ def feasibility_check(population,pop_size, length_x, length_y):
                     twos += 1
                 elif population[k, i, j] == 3:
                     threes += 1
-            if hc[j, 0] == ones and hc[j, 1] == twos and hc[j, 2] == threes:
+            if hc[0, j] == ones and hc[1, j] == twos and hc[2, j] == threes:
+                fitness_table[k] = 1
+            else:
                 ones = 0
                 twos = 0
                 threes = 0
-                fitness_table[k] = 1
-            else:
                 break
 
     return fitness_table
@@ -164,7 +164,7 @@ print (population)
 # Set general parameters
 chromosome_length_x = 14  # parallelism with days
 chromosome_length_y = 30  # parallelism with employees
-population_size = 200
+population_size = 20000
 maximum_generation = 30
 best_score_progress = []  # Tracks progress
 
@@ -174,7 +174,14 @@ population = create_starting_population(population_size, chromosome_length_x,chr
 
 # Display best score in starting population
 check_table = feasibility_check(population, population_size, chromosome_length_x, chromosome_length_y)
-print(check_table)
+#print(check_table)
+count = 0
+for i in range(population_size):
+    if check_table[i] == 1:
+        count += 1
+print(count)
+
+
 '''
 best_score = np.max(scores) / chromosome_length * 100
 print('Starting best score, percent target: %.1f' % best_score)
