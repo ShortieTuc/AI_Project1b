@@ -3,7 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def create_reference_solution(chromosome_length):
+def create_reference_solution(chromosome_length_x,chromosome_length_y):
+
+    '''
     number_of_ones = int(chromosome_length / 4)
     number_of_twos = int(chromosome_length / 3)
     number_of_threes = int(chromosome_length / 2)
@@ -13,9 +15,12 @@ def create_reference_solution(chromosome_length):
     reference[0: number_of_ones] = 1
     reference[number_of_ones: number_of_twos] = 2
     reference[number_of_twos: number_of_threes] = 3
+    '''
+
+    reference = np.stack([np.random.choice(range(4),chromosome_length_x) for _ in range(chromosome_length_y)])
 
     # Shuffle the array to mix the zeros and ones
-    np.random.shuffle(reference)
+    #np.random.shuffle(reference)
 
     return reference
 
@@ -170,15 +175,17 @@ print (population)
 '''
 
 # Set general parameters
-chromosome_length = 75
-population_size = 500
-maximum_generation = 200
+chromosome_length_x = 14
+chromosome_length_y = 30
+population_size = 100
+maximum_generation = 30
 best_score_progress = []  # Tracks progress
 
 # Create reference solution
 # (this is used just to illustrate GAs)
-reference = create_reference_solution(chromosome_length)
-
+reference = create_reference_solution(chromosome_length_x,chromosome_length_y)
+print (reference)
+'''
 # Create starting population
 population = create_starting_population(population_size, chromosome_length)
 
@@ -220,3 +227,4 @@ plt.plot(best_score_progress)
 plt.xlabel('Generation')
 plt.ylabel('Best score (% target)')
 plt.show()
+'''
