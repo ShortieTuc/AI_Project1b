@@ -1,31 +1,53 @@
 import random
 import numpy as np
 import matplotlib.pyplot as plt
+from typing import Any
 
 
-def create_starting_population(individuals, chromosome_length_x,chromosome_length_y):
+def create_starting_population(individuals, length_x, length_y):
 
-    population = np.random.randint(0, 4, size=(individuals, chromosome_length_y, chromosome_length_x))
+    pop = np.random.randint(0, 4, size=(individuals, length_y, length_x))
 
-    return population
+    return pop
 
 
-def calculate_fitness(reference, population):
-    # Create an array of True/False compared to reference
-    identical_to_reference = population == reference
-    # Sum number of genes that are identical to the reference
-    fitness_scores = identical_to_reference.sum(axis=1)
+def feasibility_check(population,pop_size, length_x, length_y):
 
-    return fitness_scores
+    fitness_table = np.zeros(pop_size)
 
-'''
-reference = create_reference_solution(10)
-print ('Reference solution: \n', reference)
-population = create_starting_population(6, 10)
-print ('\nStarting population: \n', population)
-scores = calculate_fitness(reference, population)
-print('\nScores: \n', scores)
-'''
+    hc = np.zeros((3, 14))
+    for i in range(3):
+        for j in range(14):
+            if ((i == 0 and j == 0) or (i == 0 and j == 1) or (i == 0 and j == 7) or (i == 0 and j == 8) or (
+                    i == 1 and j == 0) or (i == 1 and j == 1) or (i == 1 and j == 2) or (i == 1 and j == 4) or (
+                    i == 1 and j == 7) or (i == 1 and j == 8) or (i == 1 and j == 9) or (i == 1 and j == 11)):
+                hc[i][j] = 10
+            else:
+                hc[i][j] = 5
+
+    ones = 0
+    twos = 0
+    threes = 0
+
+    for k in range(pop_size):  # population size
+        for j in range(length_x):  # days
+            for i in range(length_y):  # employees
+                if population[k, i, j] == 1:
+                    ones += 1
+                elif population[k, i, j] == 2:
+                    twos += 1
+                elif population[k, i, j] == 3:
+                    threes += 1
+            if hc[j, 0] == ones and hc[j, 1] == twos and hc[j, 2] == threes:
+                ones = 0
+                twos = 0
+                threes = 0
+                fitness_table[k] = 1
+            else:
+                break
+
+    return fitness_table
+
 
 def select_individual_by_tournament(population, scores):
     # Get population size
@@ -140,18 +162,20 @@ print (population)
 '''
 
 # Set general parameters
-chromosome_length_x = 14
-chromosome_length_y = 30
+chromosome_length_x = 14  # parallelism with days
+chromosome_length_y = 30  # parallelism with employees
 population_size = 200
 maximum_generation = 30
 best_score_progress = []  # Tracks progress
 
 # Create starting population
 population = create_starting_population(population_size, chromosome_length_x,chromosome_length_y)
-print(population)
-'''
+#print(population)
+
 # Display best score in starting population
-scores = calculate_fitness(reference, population)
+check_table = feasibility_check(population, population_size, chromosome_length_x, chromosome_length_y)
+print(check_table)
+'''
 best_score = np.max(scores) / chromosome_length * 100
 print('Starting best score, percent target: %.1f' % best_score)
 
