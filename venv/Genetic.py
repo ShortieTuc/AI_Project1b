@@ -49,6 +49,112 @@ def feasibility_check(pop, pop_size, length_x, length_y):
     return fitness_table
 
 
+def fitness_check(fitness_table, pop, pop_size, length_x, length_y):
+    # Score Array for fitness check
+    score = np.zeros(pop_size)
+    hours = 0
+    n_days_off = 0
+    d_days_off = 0
+    for k in range(pop_size):  # population size
+        score[k] = 0
+        if fitness_table[k] == 1:
+            for i in range(length_y):  # employees
+                if hours >= 70:  # Max 70 hours
+                    score[k] += 1000
+                if n_days_off < 2:  # 2 Days off after 4 consecutive night shifts
+                    score[k] += 100
+                if d_days_off < 2:  # 2 Days off after 7 consecutive workdays
+                    score[k] += 1
+                hours = 0
+                consecutive_days = 0
+                consecutive_nights = 0
+                night_flag = 0
+                evening_flag = 0
+                nights = 0
+                n_days_off = 0
+                workdays = 0
+                d_days_off = 0
+                dayoff_flag = 0
+
+                for j in range(length_x):  # days
+                    if pop[k, i, j] == 1:  # morning_shift
+                        hours += 8
+                        consecutive_days += 1
+                        consecutive_nights = 0
+                        if night_flag == 1:  # Morning shift after night shift
+                            night_flag = 0
+                            score[k] += 1000
+                        if evening_flag == 1:  # Morning shift after evening shift
+                            evening_flag = 0
+                            score[k] += 800
+                        workdays += 1
+                        if consecutive_days == 1 and dayoff_flag == 1:  # Workday - Day off - Workday
+                            score[k] += 1
+                            dayoff_flag = 0
+                    elif pop[k, i, j] == 2:  # evening_shift
+                        hours += 8
+                        consecutive_days += 1
+                        consecutive_nights = 0
+                        if night_flag == 1:
+                            night_flag = 0
+                            score[k] += 600
+                        evening_flag = 1
+                        workdays += 1
+                        if consecutive_days == 1 and dayoff_flag == 1:  # Workday - Day off - Workday
+                            score[k] += 1
+                            dayoff_flag = 0
+
+                    elif pop[k, i, j] == 3:  # night_shift
+                        hours += 10
+                        consecutive_days += 1
+                        consecutive_nights += 1
+                        consecutive_nights = 0
+                        night_flag = 1
+                        nights += 1
+                        workdays += 1
+                        if consecutive_days == 1 and dayoff_flag == 1:  # Workday - Day off - Workday
+                            score[k] += 1
+                            dayoff_flag = 0
+
+                    else:  # day off
+                        if night_flag == 1:
+                            night_flag = 0
+                        if evening_flag == 1:
+                            evening_flag = 0
+                        if nights >= 4:
+                            n_days_off += 1
+                        if workdays >= 7:
+                            d_days_off += 1
+                        if consecutive_days == 1:
+                            if  dayoff_flag == 0:  # Day off - Workday - Day off
+                                score[k] += 1
+                            dayoff_flag = 1
+                            consecutive_days = 0
+                        else:
+                            consecutive_days = 0
+                        if j == 6 or j == 13:  # Worked Saturday but not Sunday
+                            if pop[k, i, j-1] != 0:
+                                score[k] += 1
+                        if j == 5 or j == 12:  # Worked Sunday but not Saturday
+                            if pop[k, i, j+1] != 0:
+                                score += 1
+
+                    if consecutive_days > 7:  # Worked more than 7 days in a row
+                        score[k] += 1000
+                        consecutive_days = 0
+                        consecutive_nights = 0
+
+                    if consecutive_nights > 4:  # Worked more than 4 nights in a row
+                        score[k] += 1000
+                        consecutive_nights = 0
+
+                    if j == 13:  # Worked both weekends
+                        if pop[k, i, j] != 0 and  pop[k, i, j-1] != 0:
+                            if pop[k, i, j-7] != 0 and pop[k, i, j-8] != 0:
+                                score[k] += 1
+    return score
+
+
 # Set general parameters
 chromosome_length_x = 14   # parallelism with days
 chromosome_length_y = 30   # parallelism with employees
