@@ -4,11 +4,15 @@ import matplotlib.pyplot as plt
 
 
 def create_reference_solution(chromosome_length):
-    number_of_ones = int(chromosome_length / 2)
+    number_of_ones = int(chromosome_length / 4)
+    number_of_twos = int(chromosome_length / 3)
+    number_of_threes = int(chromosome_length / 2)
 
     # Build an array with an equal mix of zero and ones
     reference = np.zeros(chromosome_length)
     reference[0: number_of_ones] = 1
+    reference[number_of_ones: number_of_twos] = 2
+    reference[number_of_twos: number_of_threes] = 3
 
     # Shuffle the array to mix the zeros and ones
     np.random.shuffle(reference)
