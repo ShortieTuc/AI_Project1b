@@ -88,7 +88,7 @@ def fitness_check(fitness_table, pop, pop_size, length_x, length_y):
                             evening_flag = 0
                             score__table[k] += 800
                         workdays += 1
-                        if consecutive_days == 1 and day_off_flag == 1:  # Workday - Day off - Workday
+                        if consecutive_days == 1 and day_off_flag == 1:  # Workday -> Day off -> Workday
                             score__table[k] += 1
                             day_off_flag = 0
                     elif pop[k, i, j] == 2:  # evening_shift
@@ -100,7 +100,7 @@ def fitness_check(fitness_table, pop, pop_size, length_x, length_y):
                             score__table[k] += 600
                         evening_flag = 1
                         workdays += 1
-                        if consecutive_days == 1 and day_off_flag == 1:  # Workday - Day off - Workday
+                        if consecutive_days == 1 and day_off_flag == 1:  # Workday -> Day off -> Workday
                             score__table[k] += 1
                             day_off_flag = 0
 
@@ -112,7 +112,7 @@ def fitness_check(fitness_table, pop, pop_size, length_x, length_y):
                         night_flag = 1
                         nights += 1
                         workdays += 1
-                        if consecutive_days == 1 and day_off_flag == 1:  # Workday - Day off - Workday
+                        if consecutive_days == 1 and day_off_flag == 1:  # Workday -> Day off -> Workday
                             score__table[k] += 1
                             day_off_flag = 0
 
@@ -126,7 +126,7 @@ def fitness_check(fitness_table, pop, pop_size, length_x, length_y):
                         if workdays >= 7:
                             d_days_off += 1
                         if consecutive_days == 1:
-                            if day_off_flag == 0:  # Day off - Workday - Day off
+                            if day_off_flag == 0:  # Day off -> Workday -> Day off
                                 score__table[k] += 1
                             day_off_flag = 1
                             consecutive_days = 0
@@ -158,7 +158,7 @@ def fitness_check(fitness_table, pop, pop_size, length_x, length_y):
 # Set general parameters
 chromosome_length_x = 14   # parallelism with days
 chromosome_length_y = 30   # parallelism with employees
-population_size = 10000  # 1 million (!!!)
+population_size = 10000  # 1 million
 maximum_generation = 30
 best_score_table_progress = []   # Tracks progress
 
