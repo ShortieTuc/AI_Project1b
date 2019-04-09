@@ -168,9 +168,8 @@ population = create_starting_population(population_size, chromosome_length_x, ch
 
 # Make Hard Constraint Check
 check_table = feasibility_check(population, population_size, chromosome_length_x, chromosome_length_y)
-# print(check_table)
-
 """
+print(check_table)
 count = 0
 for i in range(population_size):
     if check_table[i] == 1:
@@ -178,12 +177,10 @@ for i in range(population_size):
         count += 1
 print('\n', count, '\n')
 """
-
-
+# Make Soft Constraint Check and Calculate Score
 score_table = fitness_check(check_table, population, population_size, chromosome_length_x, chromosome_length_y)
-# print(score_table)
-
 """
+print(score_table)
 count = 0
 for i in range(population_size):
     if score_table[i] != 0:
