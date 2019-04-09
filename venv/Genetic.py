@@ -20,7 +20,7 @@ def create_reference_solution(chromosome_length):
     return reference
 
 # Print an example target array
-print (create_reference_solution(70))
+#print (create_reference_solution(420))
 
 
 def create_starting_population(individuals, chromosome_length):
@@ -37,7 +37,7 @@ def create_starting_population(individuals, chromosome_length):
 
     return population
 
-print (create_starting_population(4, 10))
+#print (create_starting_population(4, 10))
 
 
 def calculate_fitness(reference, population):
@@ -48,13 +48,14 @@ def calculate_fitness(reference, population):
 
     return fitness_scores
 
+'''
 reference = create_reference_solution(10)
 print ('Reference solution: \n', reference)
 population = create_starting_population(6, 10)
 print ('\nStarting population: \n', population)
 scores = calculate_fitness(reference, population)
 print('\nScores: \n', scores)
-
+'''
 
 def select_individual_by_tournament(population, scores):
     # Get population size
@@ -78,6 +79,7 @@ def select_individual_by_tournament(population, scores):
     # Return the chromsome of the winner
     return population[winner, :]
 
+'''
 # Set up and score population
 reference = create_reference_solution(10)
 population = create_starting_population(6, 10)
@@ -88,6 +90,7 @@ parent_1 = select_individual_by_tournament(population, scores)
 parent_2 = select_individual_by_tournament(population, scores)
 print (parent_1)
 print (parent_2)
+'''
 
 
 def breed_by_crossover(parent_1, parent_2):
@@ -107,6 +110,7 @@ def breed_by_crossover(parent_1, parent_2):
     # Return children
     return child_1, child_2
 
+'''
 # Set up and score population
 reference = create_reference_solution(15)
 population = create_starting_population(100, 15)
@@ -126,6 +130,7 @@ print (parent_2)
 print ('Children')
 print (child_1)
 print (child_2)
+'''
 
 
 def randomly_mutate_population(population, mutation_probability):
@@ -136,11 +141,33 @@ def randomly_mutate_population(population, mutation_probability):
     random_mutation_boolean = \
         random_mutation_array <= mutation_probability
 
-    population[random_mutation_boolean] = \
-        np.logical_not(population[random_mutation_boolean])
+    population[random_mutation_boolean] = np.logical_not(population[random_mutation_boolean])
 
     # Return mutation population
     return population
+
+'''
+# Set up and score population
+reference = create_reference_solution(15)
+population = create_starting_population(100, 15)
+scores = calculate_fitness(reference, population)
+
+# Pick two parents and display
+parent_1 = select_individual_by_tournament(population, scores)
+parent_2 = select_individual_by_tournament(population, scores)
+
+# Get children and make new population 
+child_1, child_2 = breed_by_crossover(parent_1, parent_2)
+population = np.stack((child_1, child_2))
+
+# Mutate population
+mutation_probability = 0.25
+print ("Population before mutation")
+print (population)
+population = randomly_mutate_population(population, mutation_probability)
+print ("Population after mutation")
+print (population)
+'''
 
 # Set general parameters
 chromosome_length = 75
