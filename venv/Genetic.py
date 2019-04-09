@@ -11,10 +11,11 @@ def create_starting_population(individuals, length_x, length_y):
     return pop
 
 
-def feasibility_check(population,pop_size, length_x, length_y):
+def feasibility_check(pop, pop_size, length_x, length_y):
 
-    fitness_table = np.zeros(pop_size)
+    fitness_table = np.zeros(pop_size)  # feasible table will be marked as '1', others '0'
 
+    # Table 6 in page 14 from assignment
     hc = np.zeros((3, 14))
     for i in range(3):
         for j in range(14):
@@ -29,14 +30,15 @@ def feasibility_check(population,pop_size, length_x, length_y):
     twos = 0
     threes = 0
 
+    # Access 3-D Table of Population
     for k in range(pop_size):  # population size
         for j in range(length_x):  # days
             for i in range(length_y):  # employees
-                if population[k, i, j] == 1:
+                if pop[k, i, j] == 1:
                     ones += 1
-                elif population[k, i, j] == 2:
+                elif pop[k, i, j] == 2:
                     twos += 1
-                elif population[k, i, j] == 3:
+                elif pop[k, i, j] == 3:
                     threes += 1
             if hc[0, j] == ones and hc[1, j] == twos and hc[2, j] == threes:
                 fitness_table[k] = 1
@@ -45,7 +47,6 @@ def feasibility_check(population,pop_size, length_x, length_y):
                 twos = 0
                 threes = 0
                 break
-
     return fitness_table
 
 
@@ -89,7 +90,7 @@ def breed_by_crossover(parent_1, parent_2):
     # Get length of chromosome
     chromosome_length = len(parent_1)
 
-    # Pick crossover point, avoding ends of chromsome
+    # Pick crossover point, avoiding ends of chromosome
     crossover_point = random.randint(1, chromosome_length - 1)
 
     # Create children. np.hstack joins two arrays
@@ -124,11 +125,10 @@ print (child_1)
 print (child_2)
 '''
 
-
 def randomly_mutate_population(population, mutation_probability):
     # Apply random mutation
     random_mutation_array = np.random.random(
-        size=(population.shape))
+        size = (population.shape))
 
     random_mutation_boolean = \
         random_mutation_array <= mutation_probability
@@ -137,6 +137,7 @@ def randomly_mutate_population(population, mutation_probability):
 
     # Return mutation population
     return population
+
 
 '''
 # Set up and score population
@@ -164,17 +165,18 @@ print (population)
 # Set general parameters
 chromosome_length_x = 14  # parallelism with days
 chromosome_length_y = 30  # parallelism with employees
-population_size = 20000
+population_size = 10000
 maximum_generation = 30
 best_score_progress = []  # Tracks progress
 
 # Create starting population
-population = create_starting_population(population_size, chromosome_length_x,chromosome_length_y)
-#print(population)
+population = create_starting_population(population_size, chromosome_length_x, chromosome_length_y)
+# print(population)
 
 # Display best score in starting population
 check_table = feasibility_check(population, population_size, chromosome_length_x, chromosome_length_y)
-#print(check_table)
+# print(check_table)
+
 count = 0
 for i in range(population_size):
     if check_table[i] == 1:
