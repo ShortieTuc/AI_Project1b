@@ -3,42 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def create_reference_solution(chromosome_length_x,chromosome_length_y):
+def create_starting_population(individuals, chromosome_length_x,chromosome_length_y):
 
-    '''
-    number_of_ones = int(chromosome_length / 4)
-    number_of_twos = int(chromosome_length / 3)
-    number_of_threes = int(chromosome_length / 2)
-
-    # Build an array with an equal mix of zero and ones
-    reference = np.zeros(chromosome_length)
-    reference[0: number_of_ones] = 1
-    reference[number_of_ones: number_of_twos] = 2
-    reference[number_of_twos: number_of_threes] = 3
-    '''
-
-    reference = np.stack([np.random.choice(range(4),chromosome_length_x) for _ in range(chromosome_length_y)])
-
-    # Shuffle the array to mix the zeros and ones
-    #np.random.shuffle(reference)
-
-    return reference
-
-# Print an example target array
-#print (create_reference_solution(420))
-
-
-def create_starting_population(individuals, chromosome_length):
-    # Set up an initial array of all zeros
-    population = np.zeros((individuals, chromosome_length))
-    # Loop through each row (individual)
-    for i in range(individuals):
-        # Choose a random number of ones to create
-        ones = random.randint(0, chromosome_length)
-        # Change the required number of zeros to ones
-        population[i, 0:ones] = 1
-        # Sfuffle row
-        np.random.shuffle(population[i])
+    population = np.random.randint(0, 4, size=(individuals, chromosome_length_y, chromosome_length_x))
 
     return population
 
@@ -177,18 +144,14 @@ print (population)
 # Set general parameters
 chromosome_length_x = 14
 chromosome_length_y = 30
-population_size = 100
+population_size = 200
 maximum_generation = 30
 best_score_progress = []  # Tracks progress
 
-# Create reference solution
-# (this is used just to illustrate GAs)
-reference = create_reference_solution(chromosome_length_x,chromosome_length_y)
-print (reference)
-'''
 # Create starting population
-population = create_starting_population(population_size, chromosome_length)
-
+population = create_starting_population(population_size, chromosome_length_x,chromosome_length_y)
+print(population)
+'''
 # Display best score in starting population
 scores = calculate_fitness(reference, population)
 best_score = np.max(scores) / chromosome_length * 100
