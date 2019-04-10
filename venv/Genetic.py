@@ -273,7 +273,7 @@ score_table = fitness_check(check_table, population, population_size, chromosome
 best_score = np.max(score_table)
 best_score_progress.append(best_score)
 
-# Take avg score of starting population and put it in avg_score_progress table
+# Take average score of starting population and put it in avg_score_progress table
 avg_score = np.average(score_table)
 avg_score_progress.append(avg_score)
 
@@ -335,7 +335,7 @@ for k in range(maximum_generations):
     best_score = np.max(score_table)
     best_score_progress.append(best_score)
 
-    # Take avg score of starting population and put it in avg_score_progress table
+    # Take average score of starting population and put it in avg_score_progress table
     avg_score = np.average(score_table)
     avg_score_progress.append(avg_score)
 
