@@ -4,14 +4,12 @@ import matplotlib.pyplot as plt
 
 
 def create_starting_population(pop_size, length_x, length_y):
-
     pop = np.random.randint(0, 4, size=(pop_size, length_y, length_x))
 
     return pop
 
 
 def feasibility_check(pop, pop_size, length_x, length_y):
-
     fitness_table = np.zeros(pop_size)  # feasible table will be marked as '1', others '0'
 
     # Table 6 (Hard Constraint) in page 14 from assignment
@@ -59,7 +57,7 @@ def fitness_check(fitness_table, pop, pop_size, length_x, length_y):
         score__table[k] = 0
         if fitness_table[k] == 1:
             for i in range(length_y):  # employees
-                if hours >= 70:     # Max 70 hours
+                if hours >= 70:  # Max 70 hours
                     score__table[k] += 1000
                 if n_days_off < 2:  # 2 Days off after 4 consecutive night shifts
                     score__table[k] += 100
@@ -80,7 +78,7 @@ def fitness_check(fitness_table, pop, pop_size, length_x, length_y):
                         hours += 8
                         consecutive_days += 1
                         consecutive_nights = 0
-                        if night_flag == 1:    # Morning shift after night shift
+                        if night_flag == 1:  # Morning shift after night shift
                             night_flag = 0
                             score__table[k] += 1000
                         if evening_flag == 1:  # Morning shift after evening shift
@@ -129,13 +127,13 @@ def fitness_check(fitness_table, pop, pop_size, length_x, length_y):
                             consecutive_days = 0
                         else:
                             consecutive_days = 0
-                        if j == 6 or j == 13:   # Worked Saturday but not Sunday
-                            if pop[k, i, j-1] != 0:
+                        if j == 6 or j == 13:  # Worked Saturday but not Sunday
+                            if pop[k, i, j - 1] != 0:
                                 score__table[k] += 1
-                        if j == 5 or j == 12:   # Worked Sunday but not Saturday
-                            if pop[k, i, j+1] != 0:
+                        if j == 5 or j == 12:  # Worked Sunday but not Saturday
+                            if pop[k, i, j + 1] != 0:
                                 score__table[k] += 1
-                    if consecutive_days > 7:    # Worked more than 7 days in a row
+                    if consecutive_days > 7:  # Worked more than 7 days in a row
                         score__table[k] += 1000
                         consecutive_days = 0
                         consecutive_nights = 0
@@ -143,14 +141,13 @@ def fitness_check(fitness_table, pop, pop_size, length_x, length_y):
                         score__table[k] += 1000
                         consecutive_nights = 0
                     if j == 13:  # Worked both weekends
-                        if pop[k, i, j] != 0 and pop[k, i, j-1] != 0:
-                            if pop[k, i, j-7] != 0 and pop[k, i, j-8] != 0:
+                        if pop[k, i, j] != 0 and pop[k, i, j - 1] != 0:
+                            if pop[k, i, j - 7] != 0 and pop[k, i, j - 8] != 0:
                                 score__table[k] += 1
     return score__table
 
 
 def roulette_selection(passed_chr, score__table):
-
     sum = 0
     keys = []
     for ii in range(len(passed_chr)):
@@ -165,12 +162,25 @@ def roulette_selection(passed_chr, score__table):
             return passed_chr[ii]
 
 
+def one_point_crossover(parent1, parent2, lenx, leny):
+
+    print('Parent 1: \n', parent1)
+    print('Parent 2: \n', parent2)
+
+    random_crossover_point_y = np.random.randint(1, leny-1)
+
+    print('\nRand y: ', random_crossover_point_y)
+
+    child = np.hstack((parent1[0:random_crossover_point_y][0:lenx-1], parent2[random_crossover_point_y:][0:lenx-1]))
+    print('Child: \n', child)
+
+
 # Set general parameters
-chromosome_length_x = 14   # parallelism with days
-chromosome_length_y = 30   # parallelism with employees
-population_size = 10000    # 1 million
+chromosome_length_x = 14  # parallelism with days
+chromosome_length_y = 30  # parallelism with employees
+population_size = 10000  # 1 million
 maximum_generation = 30
-best_score_table_progress = []   # Tracks progress
+best_score_table_progress = []  # Tracks progress
 
 # Create starting population
 population = create_starting_population(population_size, chromosome_length_x, chromosome_length_y)
@@ -187,11 +197,16 @@ for i in range(population_size):
     if check_table[i] == 1:
         passed_chromosomes.append(i)
 
-print('\n(', len(passed_chromosomes), ') Passed: ', passed_chromosomes)
+print('\nPassed: ', len(passed_chromosomes))
 
 # Make Soft Constraint Check and Calculate Score
 score_table = fitness_check(check_table, population, population_size, chromosome_length_x, chromosome_length_y)
 # print(score_table)
 
-selected_idx_chromosome = roulette_selection(passed_chromosomes, score_table)
-print('\nRoulette selected index chromosome: ', selected_idx_chromosome, ' with score: ', score_table[selected_idx_chromosome])
+parent_1_idx = roulette_selection(passed_chromosomes, score_table)
+parent_2_idx = roulette_selection(passed_chromosomes, score_table)
+while parent_1_idx == parent_2_idx:
+    parent_2_idx = roulette_selection(passed_chromosomes, score_table)
+
+one_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x, chromosome_length_y)
+# print('\nRoulette selected index chromosome: ', selected_idx_chromosome, ' with score: ', score_table[selected_idx_chromosome])
