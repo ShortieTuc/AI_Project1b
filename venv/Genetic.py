@@ -164,13 +164,13 @@ def roulette_selection(passed_chr, score__table):
 
 def one_point_crossover(parent1, parent2, len_x):
 
-    print('Parent 1: \n', parent1)
-    print('Parent 2: \n', parent2)
+    # print('Parent 1: \n', parent1)
+    # print('Parent 2: \n', parent2)
 
     random_crossover_point_x = np.random.randint(1, len_x-1)
 
-    print('\nRand x: ', random_crossover_point_x)
-    print('\n')
+    # print('\nRand x: ', random_crossover_point_x)
+    # print('\n')
 
     child_ = np.hstack((parent1[:, 0:random_crossover_point_x], parent2[:, random_crossover_point_x:]))
     return child_
