@@ -3,9 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def create_starting_population(individuals, length_x, length_y):
+def create_starting_population(pop_size, length_x, length_y):
 
-    pop = np.random.randint(0, 4, size=(individuals, length_y, length_x))
+    pop = np.random.randint(0, 4, size=(pop_size, length_y, length_x))
 
     return pop
 
@@ -168,7 +168,7 @@ def roulette_selection(passed_chr, score__table):
 # Set general parameters
 chromosome_length_x = 14   # parallelism with days
 chromosome_length_y = 30   # parallelism with employees
-population_size = 10000  # 1 million
+population_size = 10000    # 1 million
 maximum_generation = 30
 best_score_table_progress = []   # Tracks progress
 
@@ -195,7 +195,3 @@ score_table = fitness_check(check_table, population, population_size, chromosome
 
 selected_idx_chromosome = roulette_selection(passed_chromosomes, score_table)
 print('\nRoulette selected index chromosome: ', selected_idx_chromosome, ' with score: ', score_table[selected_idx_chromosome])
-
-
-
-
