@@ -240,7 +240,7 @@ def mutation_by_gene(child_, p_mut):
 # Set general parameters
 chromosome_length_x = 14   # parallelism with days
 chromosome_length_y = 30   # parallelism with employees
-population_size = 1000000  # 1 million
+population_size = 100000  # 1 million
 maximum_generations = 300
 p_sel = 0.05    # Probability of selection
 p_cross = 0.6  # Probability of crossover
@@ -292,8 +292,10 @@ for k in range(maximum_generations):
             p_cross_roll = np.random.random()  # Roll for crossover
             if p_cross_roll > p_cross:  # Crossover passed
                 # One-Point Crossover by column
-                child = one_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
-                new_population.append(child)
+                if parent_1_idx is not None and parent_2_idx is not None:
+                    print(k, parent_1_idx, parent_2_idx)
+                    child = one_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
+                    new_population.append(child)
                 # Multi-Point Crossover by column
                 # child = multi_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
                 # print('\nChild: \n', child)
