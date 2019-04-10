@@ -171,8 +171,8 @@ def one_point_crossover(parent1, parent2, lenx, leny):
 
     print('\nRand y: ', random_crossover_point_y)
 
-    child = np.hstack((parent1[0:random_crossover_point_y][0:lenx-1], parent2[random_crossover_point_y:][0:lenx-1]))
-    print('Child: \n', child)
+    child = np.vstack((parent1[0:random_crossover_point_y], parent2[random_crossover_point_y:]))
+    return child
 
 
 # Set general parameters
@@ -203,10 +203,12 @@ print('\nPassed: ', len(passed_chromosomes))
 score_table = fitness_check(check_table, population, population_size, chromosome_length_x, chromosome_length_y)
 # print(score_table)
 
+# One-Point Crossover
 parent_1_idx = roulette_selection(passed_chromosomes, score_table)
 parent_2_idx = roulette_selection(passed_chromosomes, score_table)
+# We don't want duplicates!
 while parent_1_idx == parent_2_idx:
     parent_2_idx = roulette_selection(passed_chromosomes, score_table)
 
-one_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x, chromosome_length_y)
-# print('\nRoulette selected index chromosome: ', selected_idx_chromosome, ' with score: ', score_table[selected_idx_chromosome])
+child = one_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x, chromosome_length_y)
+
