@@ -172,7 +172,7 @@ def one_point_crossover(parent1, parent2, len_x):
     print('\nRand x: ', random_crossover_point_x)
     print('\n')
 
-    child_ = np.hstack((parent1[:, 0:random_crossover_point_x], parent2[:,random_crossover_point_x:]))
+    child_ = np.hstack((parent1[:, 0:random_crossover_point_x], parent2[:, random_crossover_point_x:]))
     return child_
 
 
