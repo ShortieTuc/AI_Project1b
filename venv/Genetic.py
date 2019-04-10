@@ -246,7 +246,9 @@ p_sel = 0.05    # Probability of selection
 p_cross = 0.3  # Probability of crossover
 p_mut_t = 0.3  # Probability of mutation by transposition
 p_mut_g = 0.3  # Probability of mutation by gene
-best_score_progress = []  # Tracks progress
+# Tracks progress
+best_score_progress = []
+avg_score_progress = []
 
 # Create starting population
 population = create_starting_population(population_size, chromosome_length_x, chromosome_length_y)
@@ -270,6 +272,10 @@ score_table = fitness_check(check_table, population, population_size, chromosome
 # Take best score of starting population and put it in best_score_progress table
 best_score = np.max(score_table)
 best_score_progress.append(best_score)
+
+# Take avg score of starting population and put it in avg_score_progress table
+avg_score = np.average(score_table)
+avg_score_progress.append(avg_score)
 
 # This loop is also the termination criterion of our genetic algorithm
 for k in range(maximum_generations):
@@ -329,8 +335,19 @@ for k in range(maximum_generations):
     best_score = np.max(score_table)
     best_score_progress.append(best_score)
 
-# Plot progress
+    # Take avg score of starting population and put it in avg_score_progress table
+    avg_score = np.average(score_table)
+    avg_score_progress.append(avg_score)
+
+# Plot progress - Best Score
+plt.figure
 plt.plot(best_score_progress)
 plt.xlabel('Generation')
-plt.ylabel('Best score (% target)')
+plt.ylabel('Best score')
+plt.show()
+# Average Score
+plt.figure
+plt.plot(avg_score_progress)
+plt.xlabel('Generation')
+plt.ylabel('Average score')
 plt.show()
