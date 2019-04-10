@@ -345,7 +345,7 @@ plt.plot(best_score_progress)
 plt.xlabel('Generation')
 plt.ylabel('Best score')
 plt.show()
-# Average Score
+# Plot progress - Average Score
 plt.figure
 plt.plot(avg_score_progress)
 plt.xlabel('Generation')
