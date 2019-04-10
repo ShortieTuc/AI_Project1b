@@ -197,6 +197,26 @@ def multi_point_crossover(parent1, parent2, len_x):
     return child__
 
 
+def mutation_by_transposition(child_):
+
+    nr = child_.shape[0]  # number of rows
+    nc = child_.shape[1]  # number of columns
+    kx = 7
+    ky = 15
+
+    l1 = child_[:ky, :kx]
+    l2 = child_[:ky, kx:nc]
+    l3 = child_[ky:nr, :kx]
+    l4 = child_[ky:nr, kx:nc]
+
+    mutated_child_1 = np.hstack((l4, l3))
+    mutated_child_2 = np.hstack((l2, l1))
+
+    mutated_child_ = np.vstack((mutated_child_1, mutated_child_2))
+
+    return mutated_child_
+
+
 def value_inversion(old):
     if old == 0:
         new = 1
@@ -235,7 +255,6 @@ print('\nPassed: ', len(passed_chromosomes))
 
 # Make Soft Constraint Check and Calculate Score
 score_table = fitness_check(check_table, population, population_size, chromosome_length_x, chromosome_length_y)
-# print(score_table)
 
 # One-Point Crossover by column
 parent_1_idx = roulette_selection(passed_chromosomes, score_table)
@@ -247,4 +266,7 @@ while parent_1_idx == parent_2_idx:
 # child = one_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
 child = multi_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
 print('\nChild: \n', child)
+
+mutated_child = mutation_by_transposition(child)
+print('\nMutated Child: \n', mutated_child)
 
