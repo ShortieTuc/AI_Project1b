@@ -248,7 +248,6 @@ p_mut_t = 0.3  # Probability of mutation by transposition
 p_mut_g = 0.3  # Probability of mutation by gene
 best_score_progress = []  # Tracks progress
 
-
 # Create starting population
 population = create_starting_population(population_size, chromosome_length_x, chromosome_length_y)
 
@@ -274,12 +273,13 @@ best_score_progress.append(best_score)
 
 # This loop is also the termination criterion of our genetic algorithm
 for k in range(maximum_generations):
+
     print('Generation: ', k+1)
+
     new_population = []
 
     # Create new population generating one child at a time
     for i in range(int(population_size / 2)):
-
         # Select two valid chromosomes via weighted roulette
         p_sel_roll = np.random.random()  # Roll for selection
         if p_sel_roll > p_sel:  # Select Passed
@@ -308,21 +308,22 @@ for k in range(maximum_generations):
                 # print('\nMutated Child: \n', mutated_child)
 
     population = np.array(new_population)
+    population_size = len(population)
     # Make Hard Constraint Check
-    check_table = feasibility_check(population, len(population), chromosome_length_x, chromosome_length_y)
+    check_table = feasibility_check(population, population_size, chromosome_length_x, chromosome_length_y)
     # print(check_table)
 
     passed_chromosomes = []
 
     # Take indices of passed chromosomes from "Hard Constrains Check"
-    for i in range(len(population)):
+    for i in range(population_size):
         if check_table[i] == 1:
             passed_chromosomes.append(i)
 
     print('\nPassed: ', len(passed_chromosomes))
 
     # Make Soft Constraint Check and Calculate Score
-    score_table = fitness_check(check_table, population, len(population), chromosome_length_x, chromosome_length_y)
+    score_table = fitness_check(check_table, population, population_size, chromosome_length_x, chromosome_length_y)
 
     # Take best score of new population and put it in best_score_progress table
     best_score = np.max(score_table)
