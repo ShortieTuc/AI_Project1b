@@ -186,12 +186,13 @@ def multi_point_crossover(parent1, parent2, len_x):
     for i in range (3):
         # Take a random pick from x axis
         random_crossover_point_x.append(np.random.randint(1, len_x - 1))
-        print('\nRand x: ', random_crossover_point_x[i])
-        print('\n')
+        #print('\nRand x: ', random_crossover_point_x[i])
+        #print('\n')
     #Sort the points to make the join right
-    sorted(random_crossover_point_x)
-
-    child__ = np.hstack((parent1[:, 0:random_crossover_point_x[0]], parent2[:, random_crossover_point_x[0]:random_crossover_point_x[1]], parent1[:, 0:random_crossover_point_x[1]], parent2[:, random_crossover_point_x[2]:]))
+    random_crossover_point_x.sort()
+    for i in range(3):
+        print('\nRand x: ', random_crossover_point_x[i])
+    child__ = np.hstack((parent1[:, 0:random_crossover_point_x[0]], parent2[:, random_crossover_point_x[0]:random_crossover_point_x[1]], parent1[:, random_crossover_point_x[1]:random_crossover_point_x[2]], parent2[:,random_crossover_point_x[2]:]))
     return child__
 
 # Set general parameters
