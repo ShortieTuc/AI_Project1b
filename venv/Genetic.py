@@ -167,6 +167,7 @@ def one_point_crossover(parent1, parent2, len_x):
     # print('Parent 1: \n', parent1)
     # print('Parent 2: \n', parent2)
 
+    # Take a random pick from x axis
     random_crossover_point_x = np.random.randint(1, len_x-1)
 
     # print('\nRand x: ', random_crossover_point_x)
@@ -174,6 +175,38 @@ def one_point_crossover(parent1, parent2, len_x):
 
     child_ = np.hstack((parent1[:, 0:random_crossover_point_x], parent2[:, random_crossover_point_x:]))
     return child_
+
+
+def multi_point_crossover(parent1, parent2, len_x):
+
+    print('Parent 1: \n', parent1)
+    print('Parent 2: \n', parent2)
+
+    # Array of crossover points
+    random_crossover_point_x = []
+    # Generate the crossover points
+    for i in range (3):
+        # Take a random pick from x axis
+        random_crossover_point_x.append(np.random.randint(1, len_x - 1))
+
+    # Sort the points to make the join right
+    # sorted(random_crossover_point_x)
+    print(sorted(random_crossover_point_x))
+
+    child__ = np.hstack((parent1[:, 0:random_crossover_point_x[0]], parent2[:, random_crossover_point_x[0]:random_crossover_point_x[1]], parent1[:, 0:random_crossover_point_x[1]], parent2[:, random_crossover_point_x[2]:]))
+    return child__
+
+
+def value_inversion(old):
+    if old == 0:
+        new = 1
+    elif old == 1:
+        new = 2
+    elif old == 2:
+        new = 3
+    elif old == 3:
+        new = 0
+    return new
 
 
 # Set general parameters
@@ -211,6 +244,7 @@ parent_2_idx = roulette_selection(passed_chromosomes, score_table)
 while parent_1_idx == parent_2_idx:
     parent_2_idx = roulette_selection(passed_chromosomes, score_table)
 
-child = one_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
-print('Child: ', child)
+# child = one_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
+child = multi_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
+print('Child: \n', child)
 
