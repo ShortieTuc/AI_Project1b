@@ -59,7 +59,7 @@ def fitness_check(fitness_table, pop, pop_size, length_x, length_y):
         score__table[k] = 0
         if fitness_table[k] == 1:
             for i in range(length_y):  # employees
-                if hours >= 70:  # Max 70 hours
+                if hours >= 70:     # Max 70 hours
                     score__table[k] += 1000
                 if n_days_off < 2:  # 2 Days off after 4 consecutive night shifts
                     score__table[k] += 100
@@ -80,7 +80,7 @@ def fitness_check(fitness_table, pop, pop_size, length_x, length_y):
                         hours += 8
                         consecutive_days += 1
                         consecutive_nights = 0
-                        if night_flag == 1:  # Morning shift after night shift
+                        if night_flag == 1:    # Morning shift after night shift
                             night_flag = 0
                             score__table[k] += 1000
                         if evening_flag == 1:  # Morning shift after evening shift
@@ -129,13 +129,13 @@ def fitness_check(fitness_table, pop, pop_size, length_x, length_y):
                             consecutive_days = 0
                         else:
                             consecutive_days = 0
-                        if j == 6 or j == 13:  # Worked Saturday but not Sunday
+                        if j == 6 or j == 13:   # Worked Saturday but not Sunday
                             if pop[k, i, j-1] != 0:
                                 score__table[k] += 1
-                        if j == 5 or j == 12:  # Worked Sunday but not Saturday
+                        if j == 5 or j == 12:   # Worked Sunday but not Saturday
                             if pop[k, i, j+1] != 0:
                                 score__table[k] += 1
-                    if consecutive_days > 7:  # Worked more than 7 days in a row
+                    if consecutive_days > 7:    # Worked more than 7 days in a row
                         score__table[k] += 1000
                         consecutive_days = 0
                         consecutive_nights = 0
