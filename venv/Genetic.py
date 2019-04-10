@@ -162,17 +162,17 @@ def roulette_selection(passed_chr, score__table):
             return passed_chr[ii]
 
 
-def one_point_crossover(parent1, parent2, lenx, leny):
+def one_point_crossover(parent1, parent2, len_x):
 
     print('Parent 1: \n', parent1)
     print('Parent 2: \n', parent2)
 
-    random_crossover_point_y = np.random.randint(1, leny-1)
+    random_crossover_point_x = np.random.randint(1, len_x-1)
 
-    print('\nRand y: ', random_crossover_point_y)
+    print('\nRand x: ', random_crossover_point_x)
 
-    child = np.vstack((parent1[0:random_crossover_point_y], parent2[random_crossover_point_y:]))
-    return child
+    child_ = np.hstack((parent1[:, 0:random_crossover_point_x], parent2[:,random_crossover_point_x:]))
+    return child_
 
 
 # Set general parameters
@@ -210,5 +210,5 @@ parent_2_idx = roulette_selection(passed_chromosomes, score_table)
 while parent_1_idx == parent_2_idx:
     parent_2_idx = roulette_selection(passed_chromosomes, score_table)
 
-child = one_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x, chromosome_length_y)
+child = one_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
 
