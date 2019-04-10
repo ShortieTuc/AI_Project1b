@@ -238,19 +238,19 @@ def mutation_by_gene(child_, p_mut):
 
 
 # Set general parameters
-chromosome_length_x = 14  # parallelism with days
-chromosome_length_y = 30  # parallelism with employees
-population_size = 10000  # 1 million
-maximum_generation = 30
-p_sel = 0.5    # Probability of selection
+chromosome_length_x = 14   # parallelism with days
+chromosome_length_y = 30   # parallelism with employees
+population_size = 1000000  # 1 million
+maximum_generations = 300
+p_sel = 0.05    # Probability of selection
 p_cross = 0.6  # Probability of crossover
 p_mut_t = 0.7  # Probability of mutation by transposition
 p_mut_g = 0.7  # Probability of mutation by gene
+best_score_progress = []  # Tracks progress
 
 
 # Create starting population
 population = create_starting_population(population_size, chromosome_length_x, chromosome_length_y)
-# print(population)
 
 # Make Hard Constraint Check
 check_table = feasibility_check(population, population_size, chromosome_length_x, chromosome_length_y)
@@ -266,30 +266,69 @@ for i in range(population_size):
 print('\nPassed: ', len(passed_chromosomes))
 
 # Make Soft Constraint Check and Calculate Score
-
 score_table = fitness_check(check_table, population, population_size, chromosome_length_x, chromosome_length_y)
 
-# Select two valid chromosomes via weighted roulette
-p_sel_roll = np.random.random()  # Roll for selection
-if p_sel_roll > p_sel:  # Select Passed
-    parent_1_idx = roulette_selection(passed_chromosomes, score_table)
-    parent_2_idx = roulette_selection(passed_chromosomes, score_table)
-    # We don't want duplicates!
-    while parent_1_idx == parent_2_idx:
-        parent_2_idx = roulette_selection(passed_chromosomes, score_table)
+# Take best score of starting population and put it in best_score_progress table
+best_score = np.max(score_table)
+best_score_progress.append(best_score)
 
-    p_cross_roll = np.random.random()  # Roll for crossover
-    if p_cross_roll > p_cross:  # Crossover passed
-        # One-Point Crossover by column
-        child = one_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
-        # Multi-Point Crossover by column
-        child = multi_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
-        # print('\nChild: \n', child)
-        roll = np.random.random()  # Roll for mutation
-        if roll > p_mut_t:
-            # Mutation by transposition
-            mutated_child = mutation_by_transposition(child)
-            # print('\nMutated Child: \n', mutated_child)
-        # Mutation by gene
-        mutated_child = mutation_by_gene(child, p_mut_g)
-        # print('\nMutated Child: \n', mutated_child)
+# This loop is also the termination criterion of our genetic algorithm
+for k in range(maximum_generations):
+
+    new_population = []
+
+    # Create new population generating one child at a time
+    for i in range(int(population_size / 2)):
+
+        # Select two valid chromosomes via weighted roulette
+        p_sel_roll = np.random.random()  # Roll for selection
+        if p_sel_roll > p_sel:  # Select Passed
+            parent_1_idx = roulette_selection(passed_chromosomes, score_table)
+            parent_2_idx = roulette_selection(passed_chromosomes, score_table)
+            # We don't want duplicates!
+            while parent_1_idx == parent_2_idx:
+                parent_2_idx = roulette_selection(passed_chromosomes, score_table)
+
+            p_cross_roll = np.random.random()  # Roll for crossover
+            if p_cross_roll > p_cross:  # Crossover passed
+                # One-Point Crossover by column
+                child = one_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
+                new_population.append(child)
+                # Multi-Point Crossover by column
+                # child = multi_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
+                # print('\nChild: \n', child)
+                roll = np.random.random()  # Roll for mutation
+                if roll > p_mut_t:
+                    # Mutation by transposition
+                    mutated_child = mutation_by_transposition(child)
+                    # print('\nMutated Child: \n', mutated_child)
+                # Mutation by gene
+                # mutated_child = mutation_by_gene(child, p_mut_g)
+                # print('\nMutated Child: \n', mutated_child)
+
+    population = np.array(new_population)
+    # Make Hard Constraint Check
+    check_table = feasibility_check(population, population_size, chromosome_length_x, chromosome_length_y)
+    # print(check_table)
+
+    passed_chromosomes = []
+
+    # Take indices of passed chromosomes from "Hard Constrains Check"
+    for i in range(population_size):
+        if check_table[i] == 1:
+            passed_chromosomes.append(i)
+
+    print('\nPassed: ', len(passed_chromosomes))
+
+    # Make Soft Constraint Check and Calculate Score
+    score_table = fitness_check(check_table, population, population_size, chromosome_length_x, chromosome_length_y)
+
+    # Take best score of new population and put it in best_score_progress table
+    best_score = np.max(score_table)
+    best_score_progress.append(best_score)
+
+# Plot progress
+plt.plot(best_score_progress)
+plt.xlabel('Generation')
+plt.ylabel('Best score (% target)')
+plt.show()
