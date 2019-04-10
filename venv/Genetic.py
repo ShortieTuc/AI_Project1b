@@ -156,22 +156,19 @@ def fitness_check(fitness_table, pop, pop_size, length_x, length_y):
 
 
 def roulette_selection(passed_chr, score__table):
+
     sum = 0
-    i = 0
     keys = []
-    for i in range(len(passed_chr)):
+    for ii in range(len(passed_chr)):
         keys.append(sum)
-        sum += score__table[passed_chr[i]]
+        sum += score__table[passed_chr[ii]]
 
     max = sum
-    print('\nMax: ', max)
     key = np.random.randint(0, max)
-    print('\nKeys: ', keys)
-    print('\nKey: ', key)
 
-    for i in range(len(keys)):
-        if key > keys[i]:
-            return passed_chr[keys[i]]
+    for ii in range(len(keys)):
+        if keys[ii] > key:
+            return passed_chr[ii]
 
 
 # Set general parameters
@@ -189,30 +186,22 @@ population = create_starting_population(population_size, chromosome_length_x, ch
 check_table = feasibility_check(population, population_size, chromosome_length_x, chromosome_length_y)
 # print(check_table)
 
-count = 0
 passed_chromosomes = []
 
+# Take indices of passed chromosomes from "Hard Constrains Check"
 for i in range(population_size):
     if check_table[i] == 1:
-        # print(i)
         passed_chromosomes.append(i)
-        count += 1
-# print('\n', count, '\n')
 
-print('\nPassed: ', passed_chromosomes)
+print('\n(', len(passed_chromosomes), ') Passed: ', passed_chromosomes)
 
 # Make Soft Constraint Check and Calculate Score
 score_table = fitness_check(check_table, population, population_size, chromosome_length_x, chromosome_length_y)
 # print(score_table)
 
-count = 0
-for i in range(population_size):
-    if score_table[i] != 0:
-        # print(i)
-        count += 1
-# print('\n', count, '\n')
+selected_idx_chromosome = roulette_selection(passed_chromosomes, score_table)
+print('\nRoulette selected index chromosome: ', selected_idx_chromosome, ' with score: ', score_table[selected_idx_chromosome])
 
-print(roulette_selection(passed_chromosomes, score_table))
 
 
 
