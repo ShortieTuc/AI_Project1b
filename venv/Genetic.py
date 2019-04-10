@@ -203,7 +203,7 @@ print('\nPassed: ', len(passed_chromosomes))
 score_table = fitness_check(check_table, population, population_size, chromosome_length_x, chromosome_length_y)
 # print(score_table)
 
-# One-Point Crossover
+# One-Point Crossover by column
 parent_1_idx = roulette_selection(passed_chromosomes, score_table)
 parent_2_idx = roulette_selection(passed_chromosomes, score_table)
 # We don't want duplicates!
