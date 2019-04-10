@@ -164,7 +164,10 @@ def roulette_selection(passed_chr, score__table):
         sum += score__table[passed_chr[i]]
 
     max = sum
+    print('\nMax: ', max)
     key = np.random.randint(0, max)
+    print('\nKeys: ', keys)
+    print('\nKey: ', key)
 
     for i in range(len(keys)):
         if key > keys[i]:
