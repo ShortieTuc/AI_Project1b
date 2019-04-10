@@ -216,17 +216,25 @@ def mutation_by_transposition(child_):
 
     return mutated_child_
 
+def mutation_by_gene(child_, pmut):
+    nr = child_.shape[0]  # number of rows
+    nc = child_.shape[1]  # number of columns
 
-def value_inversion(old):
-    if old == 0:
-        new = 1
-    elif old == 1:
-        new = 2
-    elif old == 2:
-        new = 3
-    elif old == 3:
-        new = 0
-    return new
+    for i in range (nr):
+        for j in range (nc):
+            roll = np.random.random()
+            if roll > pmut:
+                if child_[i][j] == 1:
+                    child_[i][j] = 2
+                elif child_[i][j] == 2:
+                    child_[i][j] = 3
+                elif child_[i][j] == 3:
+                    child_[i][j] = 0
+                else:
+                    child_[i][j] = 1
+
+    return child_
+
 
 
 # Set general parameters
@@ -266,7 +274,11 @@ while parent_1_idx == parent_2_idx:
 # child = one_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
 child = multi_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
 print('\nChild: \n', child)
-
-mutated_child = mutation_by_transposition(child)
+# probability of mutation
+pmut = 0.7
+roll = np.random.random()
+if roll > pmut:
+    mutated_child = mutation_by_transposition(child)
+mutated_child = mutation_by_gene(child, pmut)
 print('\nMutated Child: \n', mutated_child)
 
