@@ -190,7 +190,7 @@ def multi_point_crossover(parent1, parent2, len_x):
         # Take a random pick from x axis
         random_crossover_point_x.append(np.random.randint(1, len_x - 1))
 
-    # Sort the points to make the join right
+    # Sort the points to make a right join
     random_crossover_point_x.sort()
 
     child__ = np.hstack((parent1[:, 0:random_crossover_point_x[0]], parent2[:, random_crossover_point_x[0]:random_crossover_point_x[1]], parent1[:, random_crossover_point_x[1]:random_crossover_point_x[2]], parent2[:,random_crossover_point_x[2]:]))
