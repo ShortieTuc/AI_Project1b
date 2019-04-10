@@ -28,17 +28,17 @@ def feasibility_check(pop, pop_size, length_x, length_y):
     threes = 0
 
     # Access 3-D Table of Population
-    for k in range(pop_size):  # population size
-        for j in range(length_x):  # days
-            for i in range(length_y):  # employees
-                if pop[k, i, j] == 1:
+    for kk in range(pop_size):  # population size
+        for jj in range(length_x):  # days
+            for ii in range(length_y):  # employees
+                if pop[kk, ii, jj] == 1:
                     ones += 1
-                elif pop[k, i, j] == 2:
+                elif pop[kk, ii, jj] == 2:
                     twos += 1
-                elif pop[k, i, j] == 3:
+                elif pop[kk, ii, jj] == 3:
                     threes += 1
-            if hc[0, j] == ones and hc[1, j] == twos and hc[2, j] == threes:
-                fitness_table[k] = 1
+            if hc[0, jj] == ones and hc[1, jj] == twos and hc[2, jj] == threes:
+                fitness_table[kk] = 1
             else:
                 ones = 0
                 twos = 0
@@ -240,8 +240,8 @@ def mutation_by_gene(child_, p_mut):
 # Set general parameters
 chromosome_length_x = 14   # parallelism with days
 chromosome_length_y = 30   # parallelism with employees
-population_size = 100000  # 1 million
-maximum_generations = 300
+population_size = 10000  # 1 million
+maximum_generations = 10
 p_sel = 0.05    # Probability of selection
 p_cross = 0.6  # Probability of crossover
 p_mut_t = 0.7  # Probability of mutation by transposition
@@ -309,21 +309,22 @@ for k in range(maximum_generations):
                 # print('\nMutated Child: \n', mutated_child)
 
     population = np.array(new_population)
+    print(population)
     # Make Hard Constraint Check
-    check_table = feasibility_check(population, population_size, chromosome_length_x, chromosome_length_y)
+    check_table = feasibility_check(population, len(population), chromosome_length_x, chromosome_length_y)
     # print(check_table)
 
     passed_chromosomes = []
 
     # Take indices of passed chromosomes from "Hard Constrains Check"
-    for i in range(population_size):
+    for i in range(len(population)):
         if check_table[i] == 1:
             passed_chromosomes.append(i)
 
     print('\nPassed: ', len(passed_chromosomes))
 
     # Make Soft Constraint Check and Calculate Score
-    score_table = fitness_check(check_table, population, population_size, chromosome_length_x, chromosome_length_y)
+    score_table = fitness_check(check_table, population, len(population), chromosome_length_x, chromosome_length_y)
 
     # Take best score of new population and put it in best_score_progress table
     best_score = np.max(score_table)
