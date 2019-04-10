@@ -75,7 +75,6 @@ def fitness_check(fitness_table, pop, pop_size, length_x, length_y):
                 workdays = 0
                 d_days_off = 0
                 day_off_flag = 0
-
                 for j in range(length_x):  # days
                     if pop[k, i, j] == 1:  # morning_shift
                         hours += 8
@@ -103,7 +102,6 @@ def fitness_check(fitness_table, pop, pop_size, length_x, length_y):
                         if consecutive_days == 1 and day_off_flag == 1:  # Workday -> Day off -> Workday
                             score__table[k] += 1
                             day_off_flag = 0
-
                     elif pop[k, i, j] == 3:  # night_shift
                         hours += 10
                         consecutive_days += 1
@@ -115,7 +113,6 @@ def fitness_check(fitness_table, pop, pop_size, length_x, length_y):
                         if consecutive_days == 1 and day_off_flag == 1:  # Workday -> Day off -> Workday
                             score__table[k] += 1
                             day_off_flag = 0
-
                     else:  # day off
                         if night_flag == 1:
                             night_flag = 0
@@ -138,16 +135,13 @@ def fitness_check(fitness_table, pop, pop_size, length_x, length_y):
                         if j == 5 or j == 12:  # Worked Sunday but not Saturday
                             if pop[k, i, j+1] != 0:
                                 score__table[k] += 1
-
                     if consecutive_days > 7:  # Worked more than 7 days in a row
                         score__table[k] += 1000
                         consecutive_days = 0
                         consecutive_nights = 0
-
                     if consecutive_nights > 4:  # Worked more than 4 nights in a row
                         score__table[k] += 1000
                         consecutive_nights = 0
-
                     if j == 13:  # Worked both weekends
                         if pop[k, i, j] != 0 and pop[k, i, j-1] != 0:
                             if pop[k, i, j-7] != 0 and pop[k, i, j-8] != 0:
