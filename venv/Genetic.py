@@ -278,19 +278,18 @@ if p_sel_roll > p_sel:  # Select Passed
     while parent_1_idx == parent_2_idx:
         parent_2_idx = roulette_selection(passed_chromosomes, score_table)
 
-
-p_cross_roll = np.random.random()  # Roll for crossover
-if p_cross_roll > p_cross:  # Crossover passed
-    # One-Point Crossover by column
-    child = one_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
-    # Multi-Point Crossover by column
-    child = multi_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
-    # print('\nChild: \n', child)
-    roll = np.random.random()  # Roll for mutation
-    if roll > p_mut_t:
-        # Mutation by transposition
-        mutated_child = mutation_by_transposition(child)
+    p_cross_roll = np.random.random()  # Roll for crossover
+    if p_cross_roll > p_cross:  # Crossover passed
+        # One-Point Crossover by column
+        child = one_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
+        # Multi-Point Crossover by column
+        child = multi_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
+        # print('\nChild: \n', child)
+        roll = np.random.random()  # Roll for mutation
+        if roll > p_mut_t:
+            # Mutation by transposition
+            mutated_child = mutation_by_transposition(child)
+            # print('\nMutated Child: \n', mutated_child)
+        # Mutation by gene
+        mutated_child = mutation_by_gene(child, p_mut_g)
         # print('\nMutated Child: \n', mutated_child)
-    # Mutation by gene
-    mutated_child = mutation_by_gene(child, p_mut_g)
-    # print('\nMutated Child: \n', mutated_child)
