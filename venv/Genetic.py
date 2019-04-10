@@ -179,8 +179,8 @@ def one_point_crossover(parent1, parent2, len_x):
 
 def multi_point_crossover(parent1, parent2, len_x):
 
-    print('\nParent 1: \n', parent1)
-    print('\nParent 2: \n', parent2)
+    # print('\nParent 1: \n', parent1)
+    # print('\nParent 2: \n', parent2)
 
     # Array of crossover points
     random_crossover_point_x = []
