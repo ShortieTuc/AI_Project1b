@@ -241,11 +241,11 @@ def mutation_by_gene(child_, p_mut):
 chromosome_length_x = 14   # parallelism with days
 chromosome_length_y = 30   # parallelism with employees
 population_size = 10000  # 1 million
-maximum_generations = 10
+maximum_generations = 5
 p_sel = 0.05    # Probability of selection
-p_cross = 0.6  # Probability of crossover
-p_mut_t = 0.7  # Probability of mutation by transposition
-p_mut_g = 0.7  # Probability of mutation by gene
+p_cross = 0.3  # Probability of crossover
+p_mut_t = 0.3  # Probability of mutation by transposition
+p_mut_g = 0.3  # Probability of mutation by gene
 best_score_progress = []  # Tracks progress
 
 
@@ -274,7 +274,7 @@ best_score_progress.append(best_score)
 
 # This loop is also the termination criterion of our genetic algorithm
 for k in range(maximum_generations):
-
+    print('Generation: ', k+1)
     new_population = []
 
     # Create new population generating one child at a time
@@ -293,7 +293,6 @@ for k in range(maximum_generations):
             if p_cross_roll > p_cross:  # Crossover passed
                 # One-Point Crossover by column
                 if parent_1_idx is not None and parent_2_idx is not None:
-                    print(k, parent_1_idx, parent_2_idx)
                     child = one_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
                     new_population.append(child)
                 # Multi-Point Crossover by column
@@ -309,7 +308,6 @@ for k in range(maximum_generations):
                 # print('\nMutated Child: \n', mutated_child)
 
     population = np.array(new_population)
-    print(population)
     # Make Hard Constraint Check
     check_table = feasibility_check(population, len(population), chromosome_length_x, chromosome_length_y)
     # print(check_table)
