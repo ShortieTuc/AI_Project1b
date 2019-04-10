@@ -308,22 +308,21 @@ for k in range(maximum_generations):
                 # print('\nMutated Child: \n', mutated_child)
 
     population = np.array(new_population)
-    population_size = len(population)
     # Make Hard Constraint Check
-    check_table = feasibility_check(population, population_size, chromosome_length_x, chromosome_length_y)
+    check_table = feasibility_check(population, len(population), chromosome_length_x, chromosome_length_y)
     # print(check_table)
 
     passed_chromosomes = []
 
     # Take indices of passed chromosomes from "Hard Constrains Check"
-    for i in range(population_size):
+    for i in range(len(population)):
         if check_table[i] == 1:
             passed_chromosomes.append(i)
 
     print('\nPassed: ', len(passed_chromosomes))
 
     # Make Soft Constraint Check and Calculate Score
-    score_table = fitness_check(check_table, population, population_size, chromosome_length_x, chromosome_length_y)
+    score_table = fitness_check(check_table, population, len(population), chromosome_length_x, chromosome_length_y)
 
     # Take best score of new population and put it in best_score_progress table
     best_score = np.max(score_table)
