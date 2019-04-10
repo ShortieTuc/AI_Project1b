@@ -170,6 +170,7 @@ def one_point_crossover(parent1, parent2, len_x):
     random_crossover_point_x = np.random.randint(1, len_x-1)
 
     print('\nRand x: ', random_crossover_point_x)
+    print('\n')
 
     child_ = np.hstack((parent1[:, 0:random_crossover_point_x], parent2[:,random_crossover_point_x:]))
     return child_
@@ -211,4 +212,5 @@ while parent_1_idx == parent_2_idx:
     parent_2_idx = roulette_selection(passed_chromosomes, score_table)
 
 child = one_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
+print('Child: ', child)
 
