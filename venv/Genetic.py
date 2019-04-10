@@ -155,6 +155,22 @@ def fitness_check(fitness_table, pop, pop_size, length_x, length_y):
     return score__table
 
 
+def roulette_selection(passed_chr, score__table):
+    sum = 0
+    i = 0
+    keys = []
+    for i in range(len(passed_chr)):
+        keys.append(sum)
+        sum += score__table[passed_chr[i]]
+
+    max = sum
+    key = np.random.randint(0, max)
+
+    for i in range(len(keys)):
+        if key > keys[i]:
+            return passed_chr[keys[i]]
+
+
 # Set general parameters
 chromosome_length_x = 14   # parallelism with days
 chromosome_length_y = 30   # parallelism with employees
@@ -168,25 +184,32 @@ population = create_starting_population(population_size, chromosome_length_x, ch
 
 # Make Hard Constraint Check
 check_table = feasibility_check(population, population_size, chromosome_length_x, chromosome_length_y)
+# print(check_table)
 
-print(check_table)
 count = 0
+passed_chromosomes = []
+
 for i in range(population_size):
     if check_table[i] == 1:
-        print(i)
+        # print(i)
+        passed_chromosomes.append(i)
         count += 1
-print('\n', count, '\n')
+# print('\n', count, '\n')
+
+print('\nPassed: ', passed_chromosomes)
 
 # Make Soft Constraint Check and Calculate Score
 score_table = fitness_check(check_table, population, population_size, chromosome_length_x, chromosome_length_y)
+# print(score_table)
 
-print(score_table)
 count = 0
 for i in range(population_size):
     if score_table[i] != 0:
-        print(i)
+        # print(i)
         count += 1
-print('\n', count, '\n')
+# print('\n', count, '\n')
+
+print(roulette_selection(passed_chromosomes, score_table))
 
 
 
