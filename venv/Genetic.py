@@ -239,7 +239,7 @@ def mutation_by_gene(child_, p_mut):
 # Set general parameters
 chromosome_length_x = 14  # parallelism with days
 chromosome_length_y = 30  # parallelism with employees
-population_size = 10000  # 1 million
+population_size = 10000
 maximum_generations = 5
 p_sel = 0.05  # Probability of selection
 p_cross = 0.3  # Probability of crossover
