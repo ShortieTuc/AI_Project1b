@@ -339,7 +339,7 @@ for k in range(iter_max):
     avg_score_progress.append(int(avg_score))
 
 for i in range(1, len(best_score_progress)):
-    print('\n---- GEN %d ----\n' % i)
+    print('\n---- Generation %d ----\n' % i)
     print('\nBest score: ', best_score_progress[i])
     print('\nAverage score: ', avg_score_progress[i])
     print('\n')
