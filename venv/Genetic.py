@@ -163,12 +163,11 @@ def roulette_selection(passed_chr, score__table):
 
 
 def one_point_crossover(parent1, parent2, len_x):
-
     # print('\nParent 1: \n', parent1)
     # print('\nParent 2: \n', parent2)
 
     # Take a random pick from x axis
-    random_crossover_point_x = np.random.randint(1, len_x-1)
+    random_crossover_point_x = np.random.randint(1, len_x - 1)
 
     # print('\nRand x: ', random_crossover_point_x)
     # print('\n')
@@ -178,7 +177,6 @@ def one_point_crossover(parent1, parent2, len_x):
 
 
 def multi_point_crossover(parent1, parent2, len_x):
-
     # print('\nParent 1: \n', parent1)
     # print('\nParent 2: \n', parent2)
 
@@ -186,19 +184,21 @@ def multi_point_crossover(parent1, parent2, len_x):
     random_crossover_point_x = []
 
     # Generate the crossover points
-    for i in range (3):
+    for i in range(3):
         # Take a random pick from x axis
         random_crossover_point_x.append(np.random.randint(1, len_x - 1))
 
     # Sort the points to make a right join
     random_crossover_point_x.sort()
 
-    child__ = np.hstack((parent1[:, 0:random_crossover_point_x[0]], parent2[:, random_crossover_point_x[0]:random_crossover_point_x[1]], parent1[:, random_crossover_point_x[1]:random_crossover_point_x[2]], parent2[:,random_crossover_point_x[2]:]))
+    child__ = np.hstack((parent1[:, 0:random_crossover_point_x[0]],
+                         parent2[:, random_crossover_point_x[0]:random_crossover_point_x[1]],
+                         parent1[:, random_crossover_point_x[1]:random_crossover_point_x[2]],
+                         parent2[:, random_crossover_point_x[2]:]))
     return child__
 
 
 def mutation_by_transposition(child_):
-
     nr = child_.shape[0]  # number of rows
     nc = child_.shape[1]  # number of columns
     kx = 7
@@ -218,7 +218,6 @@ def mutation_by_transposition(child_):
 
 
 def mutation_by_gene(child_, p_mut):
-
     nr = child_.shape[0]  # number of rows
     nc = child_.shape[1]  # number of columns
 
@@ -238,11 +237,11 @@ def mutation_by_gene(child_, p_mut):
 
 
 # Set general parameters
-chromosome_length_x = 14   # parallelism with days
-chromosome_length_y = 30   # parallelism with employees
+chromosome_length_x = 14  # parallelism with days
+chromosome_length_y = 30  # parallelism with employees
 population_size = 10000  # 1 million
 maximum_generations = 5
-p_sel = 0.05    # Probability of selection
+p_sel = 0.05  # Probability of selection
 p_cross = 0.3  # Probability of crossover
 p_mut_t = 0.3  # Probability of mutation by transposition
 p_mut_g = 0.3  # Probability of mutation by gene
@@ -269,18 +268,18 @@ print('\nPassed: ', len(passed_chromosomes))
 # Make Soft Constraint Check and Calculate Score
 score_table = fitness_check(check_table, population, population_size, chromosome_length_x, chromosome_length_y)
 
-# Take best score of starting population and put it in best_score_progress table
+# Take best score of new population and put it in best_score_progress table
 best_score = np.max(score_table)
-best_score_progress.append(best_score)
+best_score_progress.append(int(best_score))
 
 # Take average score of starting population and put it in avg_score_progress table
 avg_score = np.average(score_table)
-avg_score_progress.append(avg_score)
+avg_score_progress.append(int(avg_score))
 
 # This loop is also the termination criterion of our genetic algorithm
 for k in range(maximum_generations):
 
-    print('Generation: ', k+1)
+    print('Generation: ', k + 1)
 
     new_population = []
 
@@ -333,14 +332,17 @@ for k in range(maximum_generations):
 
     # Take best score of new population and put it in best_score_progress table
     best_score = np.max(score_table)
-    best_score_progress.append(best_score)
+    best_score_progress.append(int(best_score))
 
     # Take average score of starting population and put it in avg_score_progress table
     avg_score = np.average(score_table)
-    avg_score_progress.append(avg_score)
+    avg_score_progress.append(int(avg_score))
 
-print('\nBest score table: \n', best_score_progress)
-print('\nBest score table: \n', best_score_progress)
+for i in range(1, len(best_score_progress)):
+    print('\n---- GEN %d ----\n' % i)
+    print('\nBest score: ', best_score_progress[i])
+    print('\nAverage score: ', avg_score_progress[i])
+    print('\n')
 
 # Plot progress - Best Score
 plt.figure
