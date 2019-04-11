@@ -339,12 +339,16 @@ for k in range(maximum_generations):
     avg_score = np.average(score_table)
     avg_score_progress.append(avg_score)
 
+print('\nBest score table: \n', best_score_progress)
+print('\nBest score table: \n', best_score_progress)
+
 # Plot progress - Best Score
 plt.figure
 plt.plot(best_score_progress)
 plt.xlabel('Generation')
 plt.ylabel('Best score')
 plt.show()
+
 # Plot progress - Average Score
 plt.figure
 plt.plot(avg_score_progress)
