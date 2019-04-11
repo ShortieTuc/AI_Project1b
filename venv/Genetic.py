@@ -240,7 +240,7 @@ def mutation_by_gene(child_, p_mut):
 chromosome_length_x = 14  # parallelism with days
 chromosome_length_y = 30  # parallelism with employees
 population_size = 10000
-maximum_generations = 5
+iter_max = 5
 p_sel = 0.05  # Probability of selection
 p_cross = 0.3  # Probability of crossover
 p_mut_t = 0.3  # Probability of mutation by transposition
@@ -277,7 +277,7 @@ avg_score = np.average(score_table)
 avg_score_progress.append(int(avg_score))
 
 # This loop is also the termination criterion of our genetic algorithm
-for k in range(maximum_generations):
+for k in range(iter_max):
 
     print('Generation: ', k + 1)
 
