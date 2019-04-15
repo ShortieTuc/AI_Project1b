@@ -240,7 +240,7 @@ def mutation_by_gene(child_, p_mut):
 chromosome_length_x = 14  # parallelism with days
 chromosome_length_y = 30  # parallelism with employees
 population_size = 10000
-iter_max = 5
+iter_max = 10
 p_sel = 0.05  # Probability of selection
 p_cross = 0.3  # Probability of crossover
 p_mut_t = 0.3  # Probability of mutation by transposition
@@ -331,12 +331,14 @@ for k in range(iter_max):
     score_table = fitness_check(check_table, population, population_size, chromosome_length_x, chromosome_length_y)
 
     # Take best score of new population and put it in best_score_progress table
-    best_score = np.max(score_table)
-    best_score_progress.append(int(best_score))
+    if len(score_table) != 0:
 
-    # Take average score of starting population and put it in avg_score_progress table
-    avg_score = np.average(score_table)
-    avg_score_progress.append(int(avg_score))
+        best_score = np.max(score_table)
+        best_score_progress.append(int(best_score))
+
+        # Take average score of starting population and put it in avg_score_progress table
+        avg_score = np.average(score_table)
+        avg_score_progress.append(int(avg_score))
 
 for i in range(1, len(best_score_progress)):
     print('\n---- Generation: %d ----\n' % i)
