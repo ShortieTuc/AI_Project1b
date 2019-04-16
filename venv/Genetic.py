@@ -301,16 +301,16 @@ for k in range(iter_max):
                     child = one_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
                     new_population.append(child)
                 # Multi-Point Crossover by column
-                    #child = multi_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
-                    #new_population.append(child)
-                    #print('\nChild: \n', child)
+                    # child = multi_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
+                    # new_population.append(child)
+                    # print('\nChild: \n', child)
                 roll = np.random.random()  # Roll for mutation
                 if roll > p_mut_g:
                     # Mutation by transposition
                     mutated_child = mutation_by_transposition(child)
                     # print('\nMutated Child: \n', mutated_child)
                 # Mutation by gene
-                    #mutated_child = mutation_by_gene(child, p_mut_g)
+                    # mutated_child = mutation_by_gene(child, p_mut_g)
                     # print('\nMutated Child: \n', mutated_child)
 
     population = np.array(new_population)
@@ -348,15 +348,17 @@ for i in range(1, len(best_score_progress)):
     print('\n')
 
 # Plot progress - Best Score
-plt.figure
+plt.figure()
+plt.subplot(2, 1, 1)
 plt.plot(best_score_progress)
 plt.xlabel('Generation')
 plt.ylabel('Best score')
-plt.show()
+plt.title('Best Score Progress')
 
 # Plot progress - Average Score
-plt.figure
+plt.subplot(2, 1, 2)
 plt.plot(avg_score_progress)
 plt.xlabel('Generation')
 plt.ylabel('Average score')
+plt.title('Average Score Progress')
 plt.show()
