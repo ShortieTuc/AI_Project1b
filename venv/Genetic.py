@@ -240,11 +240,11 @@ def mutation_by_gene(child_, p_mut):
 chromosome_length_x = 14  # parallelism with days
 chromosome_length_y = 30  # parallelism with employees
 population_size = 10000
-iter_max = 5
-p_sel = 0.05  # Probability of selection
-p_cross = 0.3  # Probability of crossover
-p_mut_t = 0.3  # Probability of mutation by transposition
-p_mut_g = 0.3  # Probability of mutation by gene
+iter_max = 20
+p_sel = 0.02  # Probability of selection
+p_cross = 0.05  # Probability of crossover
+p_mut_t = 0.05  # Probability of mutation by transposition
+p_mut_g = 0.02 # Probability of mutation by gene
 # Tracks progress
 best_score_progress = []
 avg_score_progress = []
@@ -269,7 +269,7 @@ print('\nPassed: ', len(passed_chromosomes))
 score_table = fitness_check(check_table, population, population_size, chromosome_length_x, chromosome_length_y)
 
 # Take best score of new population and put it in best_score_progress table
-best_score = np.max(score_table)
+best_score = np.min(score_table)
 best_score_progress.append(int(best_score))
 
 # Take average score of starting population and put it in avg_score_progress table
@@ -301,16 +301,17 @@ for k in range(iter_max):
                     child = one_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
                     new_population.append(child)
                 # Multi-Point Crossover by column
-                # child = multi_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
-                # print('\nChild: \n', child)
+                    #child = multi_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
+                    #new_population.append(child)
+                    #print('\nChild: \n', child)
                 roll = np.random.random()  # Roll for mutation
-                if roll > p_mut_t:
+                if roll > p_mut_g:
                     # Mutation by transposition
                     mutated_child = mutation_by_transposition(child)
                     # print('\nMutated Child: \n', mutated_child)
                 # Mutation by gene
-                # mutated_child = mutation_by_gene(child, p_mut_g)
-                # print('\nMutated Child: \n', mutated_child)
+                    #mutated_child = mutation_by_gene(child, p_mut_g)
+                    # print('\nMutated Child: \n', mutated_child)
 
     population = np.array(new_population)
     population_size = len(population)
@@ -332,8 +333,8 @@ for k in range(iter_max):
 
     # Take best score of new population and put it in best_score_progress table
     if len(score_table) != 0:
-        # Take best score of new population and put it in best_score_progress table
-        best_score = np.max(score_table)
+
+        best_score = np.min(score_table)
         best_score_progress.append(int(best_score))
 
         # Take average score of starting population and put it in avg_score_progress table
@@ -347,19 +348,15 @@ for i in range(1, len(best_score_progress)):
     print('\n')
 
 # Plot progress - Best Score
-plt.figure()
-plt.subplot(2, 1, 1)
+plt.figure
 plt.plot(best_score_progress)
 plt.xlabel('Generation')
 plt.ylabel('Best score')
-plt.title('Best Score Progress')
+plt.show()
 
 # Plot progress - Average Score
-plt.subplot(2, 1, 2)
+plt.figure
 plt.plot(avg_score_progress)
 plt.xlabel('Generation')
 plt.ylabel('Average score')
-plt.title('Average Score Progress')
 plt.show()
-
-
