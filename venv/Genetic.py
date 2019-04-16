@@ -218,6 +218,7 @@ def mutation_by_transposition(child_):
 
 
 def mutation_by_gene(child_, p_mut):
+
     nr = child_.shape[0]  # number of rows
     nc = child_.shape[1]  # number of columns
 
@@ -231,7 +232,7 @@ def mutation_by_gene(child_, p_mut):
                     child_[ii][jj] = 3
                 elif child_[ii][jj] == 3:
                     child_[ii][jj] = 0
-                else:
+                elif child_[ii][jj] == 0:
                     child_[ii][jj] = 1
     return child_
 
@@ -244,7 +245,7 @@ iter_max = 20
 p_sel = 0.02  # Probability of selection
 p_cross = 0.05  # Probability of crossover
 p_mut_t = 0.05  # Probability of mutation by transposition
-p_mut_g = 0.5  # Probability of mutation by gene
+p_mut_g = 0.95  # Probability of mutation by gene
 # Tracks progress
 best_score_progress = []
 avg_score_progress = []
@@ -300,18 +301,20 @@ for k in range(iter_max):
                 if parent_1_idx is not None and parent_2_idx is not None:
                     child = one_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
                     new_population.append(child)
-                # Multi-Point Crossover by column
+                    # Multi-Point Crossover by column
                     # child = multi_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
                     # new_population.append(child)
                     # print('\nChild: \n', child)
+                """
                 roll = np.random.random()  # Roll for mutation
                 if roll > p_mut_g:
                     # Mutation by transposition
                     mutated_child = mutation_by_transposition(child)
                     # print('\nMutated Child: \n', mutated_child)
-                    # Mutation by gene
-                    # mutated_child = mutation_by_gene(child, p_mut_g)
-                    # print('\nMutated Child: \n', mutated_child)
+                """
+                # Mutation by gene
+                mutated_child = mutation_by_gene(child, p_mut_g)
+                # print('\nMutated Child: \n', mutated_child)
 
     population = np.array(new_population)
     population_size = len(population)
