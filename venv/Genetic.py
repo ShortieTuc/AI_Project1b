@@ -297,14 +297,11 @@ for k in range(iter_max):
 
             p_cross_roll = np.random.random()  # Roll for crossover
             if p_cross_roll > p_cross:  # Crossover passed
-                # One-Point Crossover by column
-                if parent_1_idx is not None and parent_2_idx is not None:
+                if parent_1_idx is not None and parent_2_idx is not None:  # This check is vital!
+                    # One-Point Crossover by column
                     child = one_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
-                    new_population.append(child)
                     # Multi-Point Crossover by column
                     # child = multi_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
-                    # new_population.append(child)
-                    # print('\nChild: \n', child)
             """
             roll = np.random.random()  # Roll for mutation
             if roll > p_mut_g:
@@ -313,7 +310,7 @@ for k in range(iter_max):
                 # print('\nMutated Child: \n', mutated_child)
             """
             # Mutation by gene
-            #mutated_child = mutation_by_gene(child, p_mut_g)
+            # mutated_child = mutation_by_gene(child, p_mut_g)
             # print('\nMutated Child: \n', mutated_child)
 
     population = np.array(new_population)
