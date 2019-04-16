@@ -244,7 +244,7 @@ iter_max = 20
 p_sel = 0.02  # Probability of selection
 p_cross = 0.05  # Probability of crossover
 p_mut_t = 0.05  # Probability of mutation by transposition
-p_mut_g = 0.02 # Probability of mutation by gene
+p_mut_g = 0.5  # Probability of mutation by gene
 # Tracks progress
 best_score_progress = []
 avg_score_progress = []
@@ -291,7 +291,7 @@ for k in range(iter_max):
             parent_1_idx = roulette_selection(passed_chromosomes, score_table)
             parent_2_idx = roulette_selection(passed_chromosomes, score_table)
             # We don't want duplicates!
-            while parent_1_idx == parent_2_idx:
+            while parent_1_idx == parent_2_idx and len(passed_chromosomes) > 1:
                 parent_2_idx = roulette_selection(passed_chromosomes, score_table)
 
             p_cross_roll = np.random.random()  # Roll for crossover
@@ -307,10 +307,10 @@ for k in range(iter_max):
                 roll = np.random.random()  # Roll for mutation
                 if roll > p_mut_g:
                     # Mutation by transposition
-                    mutated_child = mutation_by_transposition(child)
+                    # mutated_child = mutation_by_transposition(child)
                     # print('\nMutated Child: \n', mutated_child)
-                # Mutation by gene
-                    # mutated_child = mutation_by_gene(child, p_mut_g)
+                    # Mutation by gene
+                    mutated_child = mutation_by_gene(child, p_mut_g)
                     # print('\nMutated Child: \n', mutated_child)
 
     population = np.array(new_population)
