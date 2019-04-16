@@ -244,7 +244,7 @@ population_size = 10000
 iter_max = 20
 p_sel = 0.02  # Probability of selection
 p_cross = 0.85  # Probability of crossover
-p_mut_t = 0.95  # Probability of mutation by transposition
+p_mut = 0.95  # Probability of mutation
 p_mut_g = 0.95  # Probability of mutation by gene
 # Tracks progress
 best_score_progress = []
@@ -288,33 +288,58 @@ for k in range(iter_max):
     for i in range(int(population_size / 2)):
         # Select two valid chromosomes via weighted roulette
         p_sel_roll = np.random.random()  # Roll for selection
+        p_cross_roll = np.random.random()  # Roll for crossover
+        p_mut_roll = np.random.random()  # Roll for mutation
+
         if p_sel_roll > p_sel:  # Select Passed
             parent_1_idx = roulette_selection(passed_chromosomes, score_table)
             parent_2_idx = roulette_selection(passed_chromosomes, score_table)
             # We don't want duplicates if we have at least two passed chromosomes!
             while parent_1_idx == parent_2_idx and len(passed_chromosomes) > 1:
                 parent_2_idx = roulette_selection(passed_chromosomes, score_table)
-
-            p_cross_roll = np.random.random()  # Roll for crossover
-            if p_cross_roll > p_cross:  # Crossover passed
+            if (p_cross_roll > p_cross) and (p_mut_roll < p_mut):
                 # One-Point Crossover by column
-                if parent_1_idx is not None and parent_2_idx is not None:
+                if parent_1_idx is not None and parent_2_idx is not None:  # This check is vital!
                     child = one_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
-                    new_population.append(child)
+
                     # Multi-Point Crossover by column
                     # child = multi_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
-                    # new_population.append(child)
+
                     # print('\nChild: \n', child)
-            """
-            roll = np.random.random()  # Roll for mutation
-            if roll > p_mut_g:
-                # Mutation by transposition
-                mutated_child = mutation_by_transposition(child)
-                # print('\nMutated Child: \n', mutated_child)
-            """
-            # Mutation by gene
-            #mutated_child = mutation_by_gene(child, p_mut_g)
-            # print('\nMutated Child: \n', mutated_child)
+                    new_population.append(child)
+                else:
+                    new_population.append(parent_1_idx)
+                    new_population.append(parent_2_idx)
+            elif (p_cross_roll > p_cross) and (p_mut_roll > p_mut):
+                # One-Point Crossover by column
+                if parent_1_idx is not None and parent_2_idx is not None:  # This check is vital!
+                    child = one_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
+
+                    # Multi-Point Crossover by column
+                    # child = multi_point_crossover(population[parent_1_idx], population[parent_2_idx], chromosome_length_x)
+
+                    # print('\nChild: \n', child)
+
+                    # Mutation by transposition
+                    mutated_child = mutation_by_transposition(child)
+                    # print('\nMutated Child: \n', mutated_child)
+
+                    # Mutation by gene
+                    # mutated_child = mutation_by_gene(child, p_mut_g)
+                    # print('\nMutated Child: \n', mutated_child)
+                    new_population.append(mutated_child)
+                else:
+                    new_population.append(parent_1_idx)
+                    new_population.append(parent_2_idx)
+
+            else:
+                new_population.append(parent_1_idx)
+                new_population.append(parent_2_idx)
+
+
+
+
+
 
     population = np.array(new_population)
     population_size = len(population)
