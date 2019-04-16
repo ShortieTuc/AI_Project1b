@@ -290,7 +290,7 @@ for k in range(iter_max):
         if p_sel_roll > p_sel:  # Select Passed
             parent_1_idx = roulette_selection(passed_chromosomes, score_table)
             parent_2_idx = roulette_selection(passed_chromosomes, score_table)
-            # We don't want duplicates!
+            # We don't want duplicates if we have at least two passed chromosomes!
             while parent_1_idx == parent_2_idx and len(passed_chromosomes) > 1:
                 parent_2_idx = roulette_selection(passed_chromosomes, score_table)
 
@@ -307,10 +307,10 @@ for k in range(iter_max):
                 roll = np.random.random()  # Roll for mutation
                 if roll > p_mut_g:
                     # Mutation by transposition
-                    # mutated_child = mutation_by_transposition(child)
+                    mutated_child = mutation_by_transposition(child)
                     # print('\nMutated Child: \n', mutated_child)
                     # Mutation by gene
-                    mutated_child = mutation_by_gene(child, p_mut_g)
+                    # mutated_child = mutation_by_gene(child, p_mut_g)
                     # print('\nMutated Child: \n', mutated_child)
 
     population = np.array(new_population)
