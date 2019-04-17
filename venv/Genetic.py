@@ -240,11 +240,11 @@ def mutation_by_gene(child_, p_mut):
 # Set general parameters
 chromosome_length_x = 14  # parallelism with days
 chromosome_length_y = 30  # parallelism with employees
-population_size = 10000
-iter_max = 20
-p_sel = 0.02  # Probability of selection
-p_cross = 0.85  # Probability of crossover
-p_mut = 0.95  # Probability of mutation
+population_size = 3000
+iter_max = 10
+p_sel = 0.05  # Probability of selection
+p_cross = 0.15  # Probability of crossover
+p_mut = 0.15  # Probability of mutation
 p_mut_g = 0.95  # Probability of mutation by gene
 # Tracks progress
 best_score_progress = []
@@ -270,7 +270,7 @@ print('\nPassed: ', len(passed_chromosomes))
 score_table = fitness_check(check_table, population, population_size, chromosome_length_x, chromosome_length_y)
 
 # Take best score of new population and put it in best_score_progress table
-best_score = np.min(score_table)
+best_score = np.max(score_table)
 best_score_progress.append(int(best_score))
 
 # Take average score of starting population and put it in avg_score_progress table
@@ -307,9 +307,6 @@ for k in range(iter_max):
 
                     # print('\nChild: \n', child)
                     new_population.append(child)
-                else:
-                    new_population.append(parent_1_idx)
-                    new_population.append(parent_2_idx)
             elif (p_cross_roll > p_cross) and (p_mut_roll > p_mut):
                 # One-Point Crossover by column
                 if parent_1_idx is not None and parent_2_idx is not None:  # This check is vital!
@@ -328,13 +325,11 @@ for k in range(iter_max):
                     # mutated_child = mutation_by_gene(child, p_mut_g)
                     # print('\nMutated Child: \n', mutated_child)
                     new_population.append(mutated_child)
-                else:
-                    new_population.append(parent_1_idx)
-                    new_population.append(parent_2_idx)
 
             else:
-                new_population.append(parent_1_idx)
-                new_population.append(parent_2_idx)
+                if parent_1_idx is not None and parent_2_idx is not None:  # This check is vital!
+                    new_population.append(population[parent_1_idx])
+                    new_population.append(population[parent_2_idx])
 
 
 
@@ -362,7 +357,7 @@ for k in range(iter_max):
     # Take best score of new population and put it in best_score_progress table
     if len(score_table) != 0:
 
-        best_score = np.min(score_table)
+        best_score = np.max(score_table)
         best_score_progress.append(int(best_score))
 
         # Take average score of starting population and put it in avg_score_progress table
