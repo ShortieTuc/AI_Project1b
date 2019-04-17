@@ -242,9 +242,9 @@ chromosome_length_x = 14  # parallelism with days
 chromosome_length_y = 30  # parallelism with employees
 population_size = 3000
 iter_max = 10
-p_sel = 0.05  # Probability of selection
+p_sel = 0.05    # Probability of selection
 p_cross = 0.15  # Probability of crossover
-p_mut = 0.15  # Probability of mutation
+p_mut = 0.15    # Probability of mutation
 p_mut_g = 0.95  # Probability of mutation by gene
 # Tracks progress
 best_score_progress = []
