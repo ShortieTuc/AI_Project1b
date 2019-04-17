@@ -217,7 +217,7 @@ def mutation_by_transposition(child_):
     return mutated_child_
 
 
-def mutation_by_gene(child_, p_mut):
+def mutation_by_gene(child_, p_mutt):
 
     nr = child_.shape[0]  # number of rows
     nc = child_.shape[1]  # number of columns
@@ -225,7 +225,7 @@ def mutation_by_gene(child_, p_mut):
     for ii in range(nr):
         for jj in range(nc):
             roll_ = np.random.random()
-            if roll_ > p_mut:
+            if roll_ > p_mutt:
                 if child_[ii][jj] == 1:
                     child_[ii][jj] = 2
                 elif child_[ii][jj] == 2:
